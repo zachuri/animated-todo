@@ -81,7 +81,10 @@ export default function MainScreen() {
 
   return (
     <>
-      <Masthead title="What's up, Zack!" image={require('../../assets/cat.png')}>
+      <Masthead
+        title="What's up, Zack!"
+        image={require('../../assets/welcome.png')}
+      >
         {/* <NavBar /> */}
       </Masthead>
       <AnimatedColorBox

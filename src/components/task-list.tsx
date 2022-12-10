@@ -48,24 +48,30 @@ export const AnimatedTaskItem = (props: TaskItemProps) => {
     onPressLabel,
     onRemove
   } = props
+
   const handleToggleCheckbox = useCallback(() => {
     onToggleItem(data)
   }, [data, onToggleItem])
+
   const handleChangeSubject = useCallback(
     (subject: string) => {
       onChangeSubject(data, subject)
     },
     [data, onChangeSubject]
   )
+
   const handleFinishEditing = useCallback(() => {
     onFinishEditing(data)
   }, [data, onFinishEditing])
+
   const handlePressLabel = useCallback(() => {
     onPressLabel(data)
   }, [data, onPressLabel])
+
   const handleRemove = useCallback(() => {
     onRemove(data)
   }, [data, onRemove])
+
   return (
     <StyledView
       w="full"

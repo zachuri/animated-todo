@@ -27,6 +27,7 @@ const AnimatedTaskLabel = memo((props: Props) => {
     props
 
   const hstackOffset = useSharedValue(0)
+
   const hstackAnimatedStyles = useAnimatedStyle(
     () => ({
       transform: [{ translateX: hstackOffset.value }]
@@ -34,6 +35,7 @@ const AnimatedTaskLabel = memo((props: Props) => {
     [strikethrough]
   )
   const textColorProgress = useSharedValue(0)
+
   const textColorAnimatedStyles = useAnimatedStyle(
     () => ({
       color: interpolateColor(
@@ -44,7 +46,9 @@ const AnimatedTaskLabel = memo((props: Props) => {
     }),
     [strikethrough, textColor, inactiveTextColor]
   )
+
   const strikethroughWidth = useSharedValue(0)
+
   const strikethroughAnimatedStyles = useAnimatedStyle(
     () => ({
       width: `${strikethroughWidth.value * 100}%`,
