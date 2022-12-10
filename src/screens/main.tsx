@@ -8,43 +8,128 @@ import {
   useColorMode,
   useColorModeValue,
   VStack,
-  Pressable
+  Pressable,
+  Fab,
+  Icon
 } from 'native-base'
 import { StyleSheet, View } from 'react-native'
 import ThemeToggle from '../components/theme-toggle'
-import AnimatedCheckbox from 'react-native-checkbox-reanimated'
+import shortid from 'shortid'
+import TaskList from '../components/task-list'
+import { AntDesign } from '@expo/vector-icons'
+import AnimatedColorBox from '../components/animated-color-box'
+import Masthead from '../components/masthead'
+
+const initialData = [
+  {
+    id: shortid.generate(),
+    subject: 'Buy movie tickets for Friday',
+    done: false
+  },
+  {
+    id: shortid.generate(),
+    subject: 'Make a React Native tutorial',
+    done: false
+  }
+]
 
 export default function MainScreen() {
-  const [checked, setChecked] = React.useState<boolean>(false)
+  const [data, setData] = React.useState(initialData)
+  const [editingItemId, setEditingItemId] = React.useState<string | null>(null)
 
-  const handleCheckboxPress = () => {
-    setChecked(prev => {
-      return !prev
+  const handleToggleTaskItem = React.useCallback((item: any) => {
+    setData(prevData => {
+      const newData = [...prevData]
+      const index = prevData.indexOf(item)
+      newData[index] = {
+        ...item,
+        done: !item.done
+      }
+      return newData
     })
-  }
+  }, [])
+
+  const handleChangeTaskItemSubject = React.useCallback(
+    (item: any, newSubject: any) => {
+      setData(prevData => {
+        const newData = [...prevData]
+        const index = prevData.indexOf(item)
+        newData[index] = {
+          ...item,
+          subject: newSubject
+        }
+        return newData
+      })
+    },
+    []
+  )
+
+  const handleFinishEditingTaskItem = React.useCallback((_item: any) => {
+    setEditingItemId(null)
+  }, [])
+
+  const handlePressTaskItemLabel = React.useCallback((item: any) => {
+    setEditingItemId(item.id)
+  }, [])
+
+  const handleRemoveItem = React.useCallback((item: any) => {
+    setData(prevData => {
+      const newData = prevData.filter(i => i !== item)
+      return newData
+    })
+  }, [])
 
   return (
-    <Center
-      _dark={{ bg: 'blueGray.900' }}
-      _light={{ bg: 'blueGray.50' }}
-      px={4}
-      flex={1}
-    >
-      <VStack space={5} alignItems="center">
-        <Pressable onPress={handleCheckboxPress} style={styles.checkbox}>
-          <AnimatedCheckbox
-            checked={checked}
-            highlightColor="#4444ff"
-            checkmarkColor="#ffffff"
-            boxOutlineColor="#4444ff"
+    <>
+      <Masthead title="What's up, Zack!" image={require('../../assets/cat.png')}>
+        {/* <NavBar /> */}
+      </Masthead>
+      <AnimatedColorBox
+        flex={1}
+        bg={useColorModeValue('warmGray.50', 'primary.900')}
+        w="full"
+      >
+        <VStack
+          flex={1}
+          space={1}
+          bg={useColorModeValue('warmGray.50', 'primary.900')}
+          mt="-20px"
+          borderTopLeftRadius="20px"
+          borderTopRightRadius="20px"
+          pt="20px"
+        >
+          <TaskList
+            data={data}
+            onToggleItem={handleToggleTaskItem}
+            onChangeSubject={handleChangeTaskItemSubject}
+            onFinishEditing={handleFinishEditingTaskItem}
+            onPressLabel={handlePressTaskItemLabel}
+            onRemoveItem={handleRemoveItem}
+            editingItemId={editingItemId}
           />
-        </Pressable>
-        <Box p={10} bg={useColorModeValue('red.500', 'yellow.500')}>
-          <Text>Hello</Text>
-        </Box>
-        <ThemeToggle />
-      </VStack>
-    </Center>
+        </VStack>
+        <Fab
+          position="absolute"
+          renderInPortal={false}
+          size="sm"
+          icon={<Icon color="white" as={<AntDesign name="plus" />} size="sm" />}
+          colorScheme={useColorModeValue('blue', 'darkBlue')}
+          bg={useColorModeValue('blue.500', 'blue.400')}
+          onPress={() => {
+            const id = shortid.generate()
+            setData([
+              {
+                id,
+                subject: '',
+                done: false
+              },
+              ...data
+            ])
+            setEditingItemId(id)
+          }}
+        />
+      </AnimatedColorBox>
+    </>
   )
 }
 
