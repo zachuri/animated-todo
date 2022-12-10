@@ -11,7 +11,7 @@ export default function ThemeToggle() {
         isChecked={colorMode === 'light' ? true : false}
         onToggle={toggleColorMode}
       ></Switch>
-      <Text>Light</Text>
+      <Text>{colorMode === 'light' ? 'Light' : 'Dark'}</Text>
     </HStack>
   )
 }
