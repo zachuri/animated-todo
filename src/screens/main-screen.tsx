@@ -19,6 +19,7 @@ import TaskList from '../components/task-list'
 import { AntDesign } from '@expo/vector-icons'
 import AnimatedColorBox from '../components/animated-color-box'
 import Masthead from '../components/masthead'
+import NavBar from '../components/navbar'
 
 const initialData = [
   {
@@ -85,7 +86,7 @@ export default function MainScreen() {
         title="What's up, Zack!"
         image={require('../../assets/welcome.png')}
       >
-        {/* <NavBar /> */}
+        <NavBar />
       </Masthead>
       <AnimatedColorBox
         flex={1}
